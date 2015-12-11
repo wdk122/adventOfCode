@@ -88,6 +88,81 @@ var niceStringCount = function(input){
   return niceCount;
 };
 
+/*
+
+--- Part Two ---
+
+Realizing the error of his ways, Santa has switched to a better model of determining whether a string is naughty or nice. None of the old rules apply, as they are all clearly ridiculous.
+
+Now, a nice string is one with all of the following properties:
+
+It contains a pair of any two letters that appears at least twice in the string without overlapping, like xyxy (xy) or aabcdefgaa (aa), but not like aaa (aa, but it overlaps).
+It contains at least one letter which repeats with exactly one letter between them, like xyx, abcdefeghi (efe), or even aaa.
+For example:
+
+qjhvhtzxzqqjkmpb is nice because is has a pair that appears twice (qj) and a letter that repeats with exactly one letter between them (zxz).
+xxyxx is nice because it has a pair that appears twice and a letter that repeats with one between, even though the letters used by each rule overlap.
+uurcxstgmygtbstg is naughty because it has a pair (tg) but no repeat with a single letter between them.
+ieodomkazucvgmuy is naughty because it has a repeating letter with one between (odo), but no pair that appears twice.
+How many strings are nice under these new rules?
+
+new rules
+  contains two identical substrings of two chars but not overlapping
+  contains substr of length 3 that is a palindrome
+  aaa
+*/
+
+var niceStringCountPt2 = function(input){
+  var niceCount = 0;
+  var strings = input.split(',');
+
+  var substrPair = function(str){
+    // for loop - iterate thru all substr's of length 2
+      // if substr exists in obj and begins gt 1 behind the current substr
+        // return true
+      // add substrings to an obj for checking later{substr: current index}
+    // return false
+    var foo = {};
+    for (var i = 0; i < str.length - 1; i++) {
+      if(foo[str[i] + str[i + 1]] !== undefined &&
+         foo[str[i] + str[i + 1]] < i - 1){
+        return true;
+      }
+      // add substr to obj only if substr is not in obj already
+      if(foo[str[i] + str[i + 1]] === undefined){  
+        foo[str[i] + str[i + 1]] = i;
+      }
+    }
+    return false;
+  };
+  
+  var palinLength3 = function(str){
+    for (var i = 0; i < str.length - 2; i++) {
+      var sub = str.substr(i,3);
+      if(sub[0] === sub[2]){
+        return true;
+      }
+    }
+    return false;
+  };
+
+  // checks if str is nice
+  var niceCheck = function(str){
+    // if(gt2vowels(str) && gt0doubles(str) && noForbidden(str)) {
+    if(substrPair(str) && palinLength3(str)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  for (var i = 0; i < strings.length; i++) {
+    if (niceCheck(strings[i])){
+      niceCount++;
+    }
+  }
+  return niceCount;
+};
+
 
 
 /*
