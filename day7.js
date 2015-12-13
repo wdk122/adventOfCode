@@ -54,51 +54,51 @@ var signals = function(input){
       if(x[0] % 1 !== 0){
         console.log('AND x0 is ref');
         results[x[4]] = _.memoize(function(){
-                  console.log('inside and x0 ref');
-                  return this[x[0]]() & this[x[2]]();
-                });
+          console.log('inside and x0 ref');
+          return this[x[0]]() & this[x[2]]();
+        });
       } else if(x[0] % 1 === 0){
         console.log('AND x0 is int');
         results[x[4]] = _.memoize(function(){
-                  console.log('inside and x0 int');
-                  return (x[0] * 1) & this[x[2]]();
-                });
+          console.log('inside and x0 int');
+          return (x[0] * 1) & this[x[2]]();
+        });
       }
     }
     if (x[1] === 'OR') {
       console.log('OR');
       results[x[4]] = _.memoize(function(){
-              console.log('inside or');
-              return this[x[0]]() | this[x[2]]();
-            });
+        console.log('inside or');
+        return this[x[0]]() | this[x[2]]();
+      });
     }
     if (x[1] === 'RSHIFT') {
       console.log('RS');
-      results[x[4]] = function(){
+      results[x[4]] = _.memoize(function(){
         console.log('inside rs');
         return this[x[0]]() >> x[2];
-      };
+      });
     }
     if (x[1] === 'LSHIFT') {
       console.log('LS');
-      results[x[4]] = function(){
+      results[x[4]] = _.memoize(function(){
         console.log('inside ls');
         return this[x[0]]() << x[2];
-      }; 
+      }); 
     }
     if (x[1] === '->') {
       if(x[0] % 1 === 0){ 
         console.log('direct int asmnt');
-        results[x[2]] = function(){
+        results[x[2]] = _.memoize(function(){
           console.log('inside dia');
           return x[0] * 1;
-        };
+        });
       } else { // if x[0] is reference
         console.log('direct ref asmnt');
-        results[x[2]] = function(){
+        results[x[2]] = _.memoize(function(){
           console.log('inside dra');
           return this[x[0]]();
-        };
+        });
       }
     }
   });
