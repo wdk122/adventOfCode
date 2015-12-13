@@ -123,6 +123,98 @@ var lightCount = function(input){
   }, 0);
 
 };
+// ===================== PART 2 =====================
+
+var lightCountPt2 = function(input){
+  // splits input string into array of 1 str per instruction
+  input = input.split(';');
+  // map each inst str to
+    // [ [xmin, ymin], [xmax, ymax], instr]
+  input = input.map(function(x){
+    // splits each instruction on whitespace
+    x = x.split(' ');
+    var output = [];
+    if (x[0] === 'turn') {
+      output[0] = x[2].split(',');
+      output[1] = x[4].split(',');
+      output[2] = x[1]; // on or off
+      
+    }
+    if (x[0] === 'toggle'){
+      output[0] = x[1].split(',');
+      output[1] = x[3].split(',');
+      output[2] = x[0];
+    }
+    return output;
+  });
+
+  var grid = new Array(1000);
+  for (var i = 0; i < grid.length; i++) {
+    grid[i] = Array.apply(null, new Array(1000)).map(Number.prototype.valueOf,0);
+  }
+
+  var turnOn = function(pt1, pt2){
+    var xmin = Math.min(pt1[0], pt2[0]);
+    var xmax = Math.max(pt1[0], pt2[0]);
+    var ymin = Math.min(pt1[1], pt2[1]);
+    var ymax = Math.max(pt1[1], pt2[1]);
+
+    for (var i = xmin; i <= xmax; i++){
+      for(var j = ymin; j <= ymax; j++){
+        grid[i][j] += 1;
+      }
+    }
+  };
+
+  var turnOff = function(pt1, pt2){
+    var xmin = Math.min(pt1[0], pt2[0]);
+    var xmax = Math.max(pt1[0], pt2[0]);
+    var ymin = Math.min(pt1[1], pt2[1]);
+    var ymax = Math.max(pt1[1], pt2[1]);
+
+    for (var i = xmin; i <= xmax; i++){
+      for(var j = ymin; j <= ymax; j++){
+        if(grid[i][j] !== 0){
+          grid[i][j] -= 1;
+        }
+      }
+    }
+  };
+
+  var flip = function(pt1, pt2){
+    var xmin = Math.min(pt1[0], pt2[0]);
+    var xmax = Math.max(pt1[0], pt2[0]);
+    var ymin = Math.min(pt1[1], pt2[1]);
+    var ymax = Math.max(pt1[1], pt2[1]);
+
+    for (var i = xmin; i <= xmax; i++){
+      for(var j = ymin; j <= ymax; j++){
+        grid[i][j] += 2;
+      }
+    }
+  };
+
+
+  for (var j = 0; j < input.length; j++) {
+    if (input[j][2] === 'on'){
+      turnOn(input[j][0], input[j][1]);
+    }
+    if (input[j][2] === 'off'){
+      turnOff(input[j][0], input[j][1]);
+    }
+    if (input[j][2] === 'toggle'){
+      flip(input[j][0], input[j][1]);
+    }
+  }
+
+  // count all the lit lights
+  return grid.reduce(function(a,b){
+    return a + b.reduce(function(c,d){
+      return c + d;
+    }, 0);
+  }, 0);
+
+};
 
 
 /*
