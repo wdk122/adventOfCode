@@ -1,1 +1,4 @@
-"aaa\x27aaa"
+""
+"abc"
+"aaa\\aaa"
+"\x27"

@@ -32,9 +32,11 @@ var charCount = function(input){
   var totalCharTally = 0;
 
   for (var i = 0; i < input.length; i++) {
+    console.log(input[i]);
     charInMemTally ++;
     totalCharTally ++;
     if(input[i] === '\"'){
+      // console.log('backslash')
       charInMemTally --;
     }
     if(input[i] === '\n'){

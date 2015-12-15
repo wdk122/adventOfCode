@@ -1,0 +1,18 @@
+GIVEN
+    need 100 tsp of ingredients
+    input list of ingredients and properties
+    ingredient properties
+        capacity
+        durability
+        flavor
+        texture
+        calories
+    score formula in prompt
+FIND
+    highest scoring cookie possible
+    with the given ingredients
+NOTES
+    {
+      Frosting: [4,5,3,2,1],
+      etc
+    }
